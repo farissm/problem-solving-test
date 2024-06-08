@@ -11,60 +11,57 @@ function replaceCharacter(str, k, minLengthStr, maxLengthStr) {
         return str
     }
 
+    let newString = str
+
     if (!isPalindrome(str) ) {
         if (str[minLengthStr] != str[maxLengthStr]) {
             let newValue = Math.max(str[minLengthStr], str[maxLengthStr])
             if (str[minLengthStr] < newValue) {
-                str.replaceAt(minLengthStr, newValue)
+                newString = str.replaceAt(minLengthStr, newValue)
                 // str[minLengthStr] = newValue
             } else {
-                str.replaceAt(maxLengthStr, newValue)
+                newString = str.replaceAt(maxLengthStr, newValue)
                 // str[maxLengthStr] = newValue
             }
             k--
         }
-
-        // if (k === 0 || minLengthStr >= maxLengthStr) {
-        //     console.log("k ==> ")
-        //     return str;
-        // }
         
-        return replaceCharacter(str, k, minLengthStr+1, maxLengthStr-1)
+        return replaceCharacter(newString, k, minLengthStr+1, maxLengthStr-1)
     }
 
     if(isPalindrome(str)) {
         if(k%2 == 0) {
-            if (str[minLengthStr] != '9') {
-                // str[minLengthStr] = '9'
-                // str[maxLengthStr] = '9'
-                str.replaceAt(minLengthStr, '9')
-                str.replaceAt(maxLengthStr, '9')
-                k = k-2
-            }
-
-            if (k === 0) {
+            if (minLengthStr >= maxLengthStr || k === 0) {
                 return str;
             }
 
-            return replaceCharacter(str, k, minLengthStr+1, maxLengthStr-1)
+            if (str[minLengthStr] != '9' && k >= 2) {
+                newString = str.replaceAt(minLengthStr, '9')
+                newString = newString.replaceAt(maxLengthStr, '9')
+                k -= 2
+            }
+            
+
+            return replaceCharacter(newString, k, minLengthStr+1, maxLengthStr-1)
         }
 
         if(k%2 != 0 && str.length%2 != 0) {
-            let middleIndex = Math.floor(str.length / 2)
-            if (str[middleIndex] != '9') {
-                // str[middleIndex] = '9'
-                str.replaceAt(middleIndex, '9')
-                k--
-            }
-
             if (k === 0) {
                 return str;
             }
 
-            return replaceCharacter(str, k, minLengthStr+1, maxLengthStr-1)
+            let middleIndex = Math.floor(str.length / 2)
+            if (str[middleIndex] != '9') {
+                newString = str.replaceAt(middleIndex, '9')
+                k--
+            }
+
+            return replaceCharacter(newString, k, minLengthStr+1, maxLengthStr-1)
         }
 
     }
+
+    return -1
 }
 
 function isPalindrome(str) {
@@ -83,10 +80,14 @@ function isPalindrome(str) {
 }
 
 String.prototype.replaceAt = function(index, replacement) {
-    return this.substr(0, index) + replacement + this.substr(index + replacement.length);
+    return this.substr(0, index) + replacement + this.substr(index + 1);
 }
 
 // Example usage:
 let str = '3943'
-let k
+let k = 3
 console.log(main(str, k)); // Output: 3993
+
+let str2 = '942239'
+let k2 = 1
+console.log(main(str2, k2)); // Output: 3993
