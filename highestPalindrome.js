@@ -18,10 +18,8 @@ function replaceCharacter(str, k, minLengthStr, maxLengthStr) {
             let newValue = Math.max(str[minLengthStr], str[maxLengthStr])
             if (str[minLengthStr] < newValue) {
                 newString = str.replaceAt(minLengthStr, newValue)
-                // str[minLengthStr] = newValue
             } else {
                 newString = str.replaceAt(maxLengthStr, newValue)
-                // str[maxLengthStr] = newValue
             }
             k--
         }
